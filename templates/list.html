@@ -1,0 +1,22 @@
+<!doctype html>
+<html>
+   <body>
+      <table border = 1>
+         <thead>
+            <td>Roll</td>
+            <td>Name</td>
+            <td>Age</td>
+         </thead>
+         
+         {% for row in rows %}
+            <tr>
+               <td>{{row[0]}}</td>
+               <td>{{row[1]}}</td>
+               <td>{{row[2]}}</td>
+            </tr>
+         {% endfor %}
+      </table>
+      
+      <a href = "/">Go back to Main page</a>
+   </body>
+</html>
