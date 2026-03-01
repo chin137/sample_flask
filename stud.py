@@ -1,6 +1,6 @@
 #Basic  Flask code to take data and save it into SQLite database that comes in built with python
 
-from flask  import Flask, render_template, request
+from flask  import Flask, render_template, request, redirect,url_for
 import sqlite3 
 app = Flask(__name__)
 
@@ -17,7 +17,7 @@ def dele(id):
 	cur.execute("delete from students where roll = ?",(id,))
 	con.commit()
 	con.close()
-	return "The Selected record has been deleted sucessfully!"
+	return redirect(url_for("getrec"))
 
 #Routing for Adding a new student
 @app.route("/new")
@@ -50,7 +50,8 @@ def addrec():
                VALUES (?,?,?)''',(roll,name,age))
 		con.commit()
 		con.close()
-		return "A Student record has been added sucessfully!"
+		return redirect(url_for("getrec"))
+		
 
 #Routing for Editing Student details
 @app.route("/updrec/<int:id>",methods =["POST","GET"])
@@ -66,7 +67,8 @@ def updrec(id):
 		cur.execute("update students set roll = ?, name = ?, age = ? where roll = ?",(roll,name,age,id))
 		con.commit()
 		con.close()
-		return "The Selected Student record has been modified sucessfully!"		
+		return redirect(url_for("getrec"))
+	
 
 
 #Routing for Getting all the Student details
