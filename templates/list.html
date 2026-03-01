@@ -3,9 +3,10 @@
    <body>
       <table border = 1>
          <thead>
-            <td>Roll</td>
-            <td>Name</td>
-            <td>Age</td>
+            <th>Roll</th>
+            <th>Name</th>
+            <th>Age</th>
+            <th>Actions</th>
          </thead>
          
          {% for row in rows %}
@@ -13,7 +14,19 @@
                <td>{{row[0]}}</td>
                <td>{{row[1]}}</td>
                <td>{{row[2]}}</td>
+               <td>
+                  <a href="/edit/{{row[0]}}" class="btn">Edit</a>
+                  <a href="/del/{{row[0]}}"  class="btn">Delete</a>
+
+
+                  
+               </td>   
+
+               
             </tr>
+            
+
+
          {% endfor %}
       </table>
       

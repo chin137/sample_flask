@@ -1,0 +1,17 @@
+<html>
+   <body>
+      <form action = "/updrec/{{rows[0]}}" method = "POST">
+         <h3>Student Updation</h3>
+         Roll Number<br>
+         <input type = "text" name = "ro" value ={{rows[0]}}><br>
+         
+         Name<br>
+         <input type = "text" name = "nm" value ={{rows[1]}}><br>
+         
+         Age<br>
+         <input type = "text" name = "ag" value = {{rows[2]}}/><br>
+         
+         <input type = "submit" value = "Submit" /><br>
+      </form>
+   </body>
+</html>
