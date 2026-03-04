@@ -1,4 +1,4 @@
-#Basic  Flask code to take data and save it into SQLite database that comes in built with python
+#Basic  Flask code to take data and save it into SQLite database that comes in built with python,CRUD Operations tutorial
 
 from flask  import Flask, render_template, request, redirect,url_for
 import sqlite3 
@@ -82,19 +82,6 @@ def dele(id):
 	con.commit()
 	con.close()
 	return redirect(url_for("getrec"))
-
-
-
-
-
-
-
-
-		
-
-
-	
-
 
 
 
