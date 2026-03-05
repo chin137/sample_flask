@@ -11,17 +11,17 @@
    <body>
       <div class = "container">
          <form action = "/updrec/{{rows[0]}}" method = "POST">
-            <h3>Student Updation</h3>
-            Roll Number<br>
-            <input type = "text" name = "ro" value ={{rows[0]}}><br>
+            <h2>Modify Student Details</h2>
+            <label for ="ro">Roll Number</label>
+            <input type = "text" name = "ro" class ="form-control"  value ={{rows[0]}}>
             
-            Name<br>
-            <input type = "text" name = "nm" value ={{rows[1]}}><br>
+            <label for ="nm">Name</label>
+            <input type = "text" name = "nm" class = "form-control" value ={{rows[1]}}>
             
-            Age<br>
-            <input type = "text" name = "ag" value = {{rows[2]}}><br>
+            <label for ="ag">Age</label>
+            <input type = "text" name = "ag" class = "form-control" value = {{rows[2]}}><br>
             
-            <input type = "submit" value = "Submit" /><br>
+            <button type="submit" class="btn btn-primary">Update</button>
          </form>
       </div>   
    </body>

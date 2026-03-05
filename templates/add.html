@@ -10,17 +10,17 @@
    <body>
       <div class = "container">
          <form action = "{{ url_for('addrec') }}" method = "POST">
-            <h3>Student Information</h3>
-            Roll Number<br>
-            <input type = "text" name = "ro" /></br>
+            <h2>Please Enter Student Details</h2>
+            <label for ="ro">Roll Number</label>
+            <input type = "text" name = "ro" class ="form-control"/>
             
-            Name<br>
-            <input type = "text"  name = "nm" /></br>
+            <label for ="nm">Name</label>
+            <input type = "text"  name = "nm" class = "form-control" />
             
-            Age<br>
-            <input type = "text" name = "ag" /><br>
+            <label for ="ag">Age</label>
+            <input type = "text" name = "ag" class ="form-control" /><br>
             
-            <input type = "submit" value = "Submit" /><br>
+            <button type="submit" class="btn btn-primary">Submit</button>
          </form>
       </div>   
    </body>

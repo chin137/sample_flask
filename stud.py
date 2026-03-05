@@ -4,6 +4,11 @@ from flask  import Flask, render_template, request, redirect,url_for
 import sqlite3 
 app = Flask(__name__)
 
+# Helper function to reduce repetitive code
+def get_db_connection():
+    conn = sqlite3.connect("database.db")
+    return conn
+
 #Basic routing for Home page 
 @app.route("/")
 def home():
@@ -12,12 +17,11 @@ def home():
 #Routing for Getting all the Student details
 @app.route("/data")
 def getrec():
-	con = sqlite3.connect("database.db")
-	cur = con.cursor()
-	res = cur.execute("select * from students")
-	rows = res.fetchall()
-	print(rows)
-	con.close()
+	with get_db_connection() as con:
+		cur = con.cursor()
+		res = cur.execute("select * from students")
+		rows = res.fetchall()
+		print(rows)
 	return render_template("list.html",rows=rows) 	
 
 #Routing for Adding a new student
@@ -33,12 +37,11 @@ def addrec():
 		roll = request.form["ro"] 
 		name = request.form["nm"] 
 		age = request.form["ag"] 
-		con = sqlite3.connect("database.db")
-		cur = con.cursor()
-		cur.execute('''INSERT INTO students  
-               VALUES (?,?,?)''',(roll,name,age))
-		con.commit()
-		con.close()
+		with get_db_connection() as con:
+			cur = con.cursor()
+			cur.execute('''INSERT INTO students  
+	               VALUES (?,?,?)''',(roll,name,age))
+			con.commit()
 		return redirect(url_for("getrec"))	
 
 
@@ -47,12 +50,11 @@ def addrec():
 #Routing for Pre-populating the Student details
 @app.route("/edit/<int:id>")
 def edit(id):
-	con = sqlite3.connect("database.db")
-	cur = con.cursor()
-	res = cur.execute("select * from students where roll = ?",(id,))
-	row = res.fetchone()
-	print(row)
-	con.close()
+	with get_db_connection() as con:
+		cur = con.cursor()
+		res = cur.execute("select * from students where roll = ?",(id,))
+		row = res.fetchone()
+		print(row)
 	return render_template("upd.html",rows = row)		
 	
 
@@ -60,34 +62,28 @@ def edit(id):
 #Routing for Saving the modified Student details
 @app.route("/updrec/<int:id>",methods =["POST","GET"])
 def updrec(id):
-	con = sqlite3.connect("database.db")
-	cur = con.cursor()
 	if request.method =="POST":
 		roll = request.form["ro"] 
 		name = request.form["nm"] 
 		age =  request.form["ag"] 
-		con = sqlite3.connect("database.db")
-		cur = con.cursor()
-		cur.execute("update students set roll = ?, name = ?, age = ? where roll = ?",(roll,name,age,id))
-		con.commit()
-		con.close()
+		with get_db_connection() as con:
+			cur = con.cursor()
+			cur.execute("update students set roll = ?, name = ?, age = ? where roll = ?",(roll,name,age,id))
+			con.commit()
 		return redirect(url_for("getrec"))		
 
 #Routing to handle deletion of one student
 @app.route("/del/<int:id>")
 def dele(id):
-	con = sqlite3.connect("database.db")
-	cur = con.cursor()
-	cur.execute("delete from students where roll = ?",(id,))
-	con.commit()
-	con.close()
+	with get_db_connection() as con:
+		cur = con.cursor()
+		cur.execute("delete from students where roll = ?",(id,))
+		con.commit()
 	return redirect(url_for("getrec"))
 
 
-
-
 if __name__ == "__main__":
-	app.run()	
+	app.run(debug = True)	
 
 
 
