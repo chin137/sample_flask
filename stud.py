@@ -1,8 +1,9 @@
 #Basic  Flask code to take data and save it into SQLite database that comes in built with python,CRUD Operations tutorial
 
-from flask  import Flask, render_template, request, redirect,url_for
+from flask  import Flask, render_template, request, redirect,url_for,flash
 import sqlite3 
 app = Flask(__name__)
+app.secret_key = "super_secret_key_1267"
 
 # Helper function to reduce repetitive code
 def get_db_connection():
@@ -42,6 +43,7 @@ def addrec():
 			cur.execute('''INSERT INTO students  
 	               VALUES (?,?,?)''',(roll,name,age))
 			con.commit()
+		flash("New Student record is added","success")	
 		return redirect(url_for("getrec"))	
 
 
@@ -70,6 +72,7 @@ def updrec(id):
 			cur = con.cursor()
 			cur.execute("update students set roll = ?, name = ?, age = ? where roll = ?",(roll,name,age,id))
 			con.commit()
+		flash("Student record is Modified!","info")	
 		return redirect(url_for("getrec"))		
 
 #Routing to handle deletion of one student
@@ -79,6 +82,7 @@ def dele(id):
 		cur = con.cursor()
 		cur.execute("delete from students where roll = ?",(id,))
 		con.commit()
+	flash("Student record is Deleted!","success")	
 	return redirect(url_for("getrec"))
 
 

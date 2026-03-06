@@ -9,8 +9,17 @@
    </head>  
    <body>
       <div class ="container">  
+         {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">{{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+         {% endwith %}
          <h2> List of Students </h2>
-         <table border = 1 class ="table table-bordered">
+         <table border = 1 class ="table table-bordered ">
             <thead>
                <th>Roll Number</th>
                <th>Name</th>
