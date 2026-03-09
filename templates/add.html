@@ -9,6 +9,15 @@
    </head>
    <body>
       <div class = "container">
+         {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">{{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+         {% endwith %}
          <form action = "{{ url_for('addrec') }}" method = "POST">
             <h2>Please Enter Student Details</h2>
             <label for ="ro">Roll Number</label>

@@ -2,6 +2,7 @@
 
 from flask  import Flask, render_template, request, redirect,url_for,flash
 import sqlite3 
+from sqlite3 import IntegrityError, OperationalError, DatabaseError
 app = Flask(__name__)
 app.secret_key = "super_secret_key_1267"
 
@@ -38,14 +39,44 @@ def addrec():
 		roll = request.form["ro"] 
 		name = request.form["nm"] 
 		age = request.form["ag"] 
+
+		if not roll or not name or not age:
+			flash(f"Please fill the entire form!","warning")
+			return redirect(url_for("newrec"))
+
+		try:
+			roll = int(roll)
+		except ValueError:
+			flash(f"Please enter a numeric value for Roll number!","warning")
+			return redirect(url_for("newrec"))
+
+		try:
+			age = int(age)
+		except ValueError:
+			flash(f"Please enter a numeric value for Age!","warning")
+			return redirect(url_for("newrec"))
+
+
 		with get_db_connection() as con:
 			cur = con.cursor()
-			cur.execute('''INSERT INTO students  
-	               VALUES (?,?,?)''',(roll,name,age))
-			con.commit()
-		flash("New Student record is added","success")	
-		return redirect(url_for("getrec"))	
-
+			try :
+				cur.execute('''INSERT INTO students  
+		               VALUES (?,?,?)''',(roll,name,age))
+			except IntegrityError:
+				flash(f"Roll number already exists","danger")
+				return redirect(url_for("newrec"))
+			except OperationalError as e:
+				flash(f"Database error{e}","danger")
+				return redirect(url_for("newrec"))
+			except Exception as e:
+				print(e)
+				flash(f"Error{e}","danger")
+				return redirect(url_for("newrec"))
+			else:
+				con.commit()
+				flash("New Student record is added","success")	
+				return redirect(url_for("getrec"))
+		
 
 
 
@@ -68,12 +99,39 @@ def updrec(id):
 		roll = request.form["ro"] 
 		name = request.form["nm"] 
 		age =  request.form["ag"] 
+
+		if not roll or not name or not age:
+			flash(f"Please fill the entire form!","warning")
+			return redirect(url_for("edit",id=id))
+
+		try:
+			roll = int(roll)
+		except ValueError:
+			flash(f"Please enter a numeric value for Roll number!","warning")
+			return redirect(url_for("edit",id=id))
+
+		try:
+			age = int(age)
+		except ValueError:
+			flash(f"Please enter a numeric value for Age!","warning")
+			return redirect(url_for("edit",id=id))
+
 		with get_db_connection() as con:
 			cur = con.cursor()
-			cur.execute("update students set roll = ?, name = ?, age = ? where roll = ?",(roll,name,age,id))
-			con.commit()
-		flash("Student record is Modified!","info")	
-		return redirect(url_for("getrec"))		
+			try :
+				cur.execute("update students set roll = ?, name = ?, age = ? where roll = ?",(roll,name,age,id))
+			except IntegrityError:
+				flash(f"Roll number already exists","danger")
+			except OperationalError as e:
+				flash(f"Database error{e}","danger")
+			except Exception as e:
+				print(e)
+				flash(f"Error{e}","danger")
+				return redirect(url_for("edit",id=id))
+			else:		
+				con.commit()
+				flash("Student record is Modified!","info")	
+				return redirect(url_for("getrec"))		
 
 #Routing to handle deletion of one student
 @app.route("/del/<int:id>")
