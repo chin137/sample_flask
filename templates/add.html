@@ -21,13 +21,13 @@
          <form action = "{{ url_for('addrec') }}" method = "POST">
             <h2>Please Enter Student Details</h2>
             <label for ="ro">Roll Number</label>
-            <input type = "text" name = "ro" class ="form-control"/>
+            <input type = "number" name = "ro" class ="form-control"/>
             
             <label for ="nm">Name</label>
             <input type = "text"  name = "nm" class = "form-control" />
             
             <label for ="ag">Age</label>
-            <input type = "text" name = "ag" class ="form-control" /><br>
+            <input type = "number" name = "ag" class ="form-control" /><br>
             
             <button type="submit" class="btn btn-primary">Submit</button>
          </form>
